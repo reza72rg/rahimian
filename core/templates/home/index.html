@@ -1,0 +1,404 @@
+
+<div class="app-content content">
+    <div class="content-wrapper">
+
+        <div class="content-body">
+
+            <div id="basic-examples">
+                <div class="card">
+                    <div class="card-content">
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-12">
+                                    <div class="ag-grid-btns d-flex justify-content-between flex-wrap mb-1">
+                                        @*<div class="mr-1 waves-effect waves-light b-1 col-md-12">
+                                            <input type="text" autocomplete="on" class="ag-grid-filter form-control sm mr-1 mb-1 mb-sm-0" id="filter-text-box" placeholder="Search...." />
+                                        </div>*@
+                                        <div class="dropdown sort-dropdown mb-1 mb-sm-0">
+                                            <button class="btn btn-white btn-sm filter-btn dropdown-toggle border text-dark" type="button" id="dropdownMenuButton6" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                1 - 20 of 500
+                                            </button>
+                                            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton6">
+                                                <a class="dropdown-item" href="#">20</a>
+                                                <a class="dropdown-item" href="#">50</a>
+                                                <a class="dropdown-item" href="#">100</a>
+                                                <a class="dropdown-item" href="#">150</a>
+                                            </div>
+                                        </div>
+                                        <div class="ag-btns d-flex flex-wrap col-md-10">
+                                            <div class="btn-export">
+                                                <button class="btn btn-success btn-sm ag-grid-export-btn mr-1">
+                                                    <i class="ft-folder"></i>
+                                                    Excel
+                                                </button>
+                                            </div>
+                                            <div class="btn-export">
+                                                <button class="btn btn-sm btn-info open-modal" data-new="PkCashIn">
+                                                    <span class="ft-file-plus"></span>
+                                                    ثبت  افزایش وجه
+                                                </button>
+                                                <button class="btn btn-warning btn-sm " id="editRowSelect" data-url="/Home/UpdateCashIn" data-token="@Context.Request.QueryString.Value.ToString().Replace("?token=", "")">
+                                                    <span class="ft-edit"></span>
+                                                    ویرایش  افزایش وجه
+                                                </button>
+                                                <button class="btn btn-danger btn-sm " id="deleteRowSelect" data-url="/Home/DeleteCashIn" data-token="@Context.Request.QueryString.Value.ToString().Replace("?token=", "")">
+                                                    <span class="ft-trash-2"></span>
+                                                    حذف  افزایش وجه
+                                                </button>
+                                                <div class="modal fade text-left" id="mymodal" tabindex="-1" role="dialog" data-backdrop="static" aria-labelledby="myModalLabel160" aria-hidden="true">
+                                                    <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable modal-lg" role="document">
+                                                        <div class="modal-content">
+                                                            <div class="modal-header bg-info white">
+                                                                <h5 class="modal-title" id="myModalLabel160">ثبت  افزایش وجه جدید</h5>
+                                                                @*<a class="nav-link nav-link-expand" href="#"><i class="ficon ft-maximize"></i></a>*@
+                                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                                    <span aria-hidden="true">&times;</span>
+                                                                </button>
+                                                            </div>
+                                                            <div class="modal-body" style="height:100%;">
+                                                                <div class="col-12">
+                                                                    <div class="card">
+                                                                        <div class="card-content">
+                                                                            <div class="card-body card-dashboard">
+
+                                                                                <div class="col-sm-12">
+                                                                                    <form asp-action="CashIn" data-ajax-success="onSuccess"
+                                                                                          data-ajax="true" data-ajax-method="POST" id="forms">
+                                                                                        <input type="hidden" name="token" value="@Context.Request.QueryString.Value.ToString().Replace("?token=", "")" />
+                                                                                        <div asp-validation-summary="All" class="text-danger" id="errorList"></div>
+                                                                                        <input type="hidden" id="PkCashIn" name="PkCashIn" value="0" />
+                                                                                        <input type="hidden" id="permisions" name="permisions" value="false" />
+                                                                                        <div id="ajaxresult">
+                                                                                            <div class="row">
+
+                                                                                             <div class="col-xs-4 col-md-4 col-sm-12">
+                                                                                                    <fieldset class="form-label-group position-relative has-icon-left">
+                                                                                                        <label for="FkClientId">انتخاب مشتری<span style="color:#f00;">(اجباری)</span></label>
+                                                                                                        <select id="FkClientId" name="FkClientId" class="btn btn-sm dropdown-toggle waves-effect waves-light select2 form-control">
+                                                                                                            <option value="" disabled selected>انتخاب مشتری</option> <!-- Default option -->
+                                                                                                            {% for client in clients %}
+                                                                                                                <option value="{{ client.pkClientID }}">{{ client.fldClientName }}</option> <!-- Render client name -->
+                                                                                                            {% empty %}
+                                                                                                                <option value="" disabled>هیچ مشتری موجود نیست</option> <!-- Fallback when no clients exist -->
+                                                                                                            {% endfor %}
+                                                                                                        </select>
+                                                                                                        <div class="form-control-position">
+                                                                                                            <i class="feather icon-user"></i>
+                                                                                                        </div>
+                                                                                                    </fieldset>
+                                                                                                </div>
+
+
+
+                                                                                             <div class="col-xs-4 col-md-4 col-sm-12">
+                                                                                                        <fieldset class="form-label-group form-group position-relative has-icon-left">
+                                                                                                            <label for="FkBrokerId">انتخاب کارگزاری <span style="color:#f00;">(اجباری)</span></label>
+                                                                                                            <select id="FkBrokerId" name="FkBrokerId" class="btn btn-outline-primary dropdown-toggle waves-effect waves-light select2 form-control">
+                                                                                                                <option value="" disabled selected>انتخاب کارگزاری</option>
+                                                                                                                {% for broker in brokers %}
+                                                                                                                    <option value="{{ broker.pkBrokerID }}">{{ broker.fldBrokerName }}</option>
+                                                                                                                {% endfor %}
+                                                                                                            </select>
+                                                                                                            <div class="form-control-position">
+                                                                                                                <i class="feather icon-user"></i>
+                                                                                                            </div>
+                                                                                                        </fieldset>
+                                                                                                    </div>
+
+
+
+
+                                                                                              <div class="col-xs-4 col-md-4 col-sm-12">
+                                                                                                    <fieldset class="form-label-group position-relative has-icon-left">
+                                                                                                        <label for="FkForeignCurrencyId">ارز مبداء<span style="color:#f00;">(اجباری)</span></label>
+                                                                                                        <select id="FkForeignCurrencyId" name="FkForeignCurrencyId" class="btn btn-outline-primary dropdown-toggle waves-effect waves-light select2 form-control">
+                                                                                                            <option >انتخاب ارز</option> <!-- Default option -->
+                                                                                                            {% for currency in foreign_currencies %}
+                                                                                                                <option value="{{ currency.pk }}">{{ currency.fldForeignCurrencyName }}</option> <!-- Render foreign currency name -->
+                                                                                                            {% empty %}
+                                                                                                                <option value="" disabled>هیچ ارزی موجود نیست</option> <!-- Fallback when no currencies exist -->
+                                                                                                            {% endfor %}
+                                                                                                        </select>
+                                                                                                        <div class="form-control-position">
+                                                                                                            <i class="feather icon-user"></i>
+                                                                                                        </div>
+                                                                                                    </fieldset>
+                                                                                                </div>
+
+
+                                                                                                <div class="col-xs-4 col-md-4 col-sm-12">
+                                                                                                    <fieldset class="form-label-group form-group position-relative has-icon-left">
+                                                                                                        <label for="FldCashInAmount">مبلغ (ارز مبداء) <span style="color:#f00;">(اجباری)</span></label>
+                                                                                                        <input type="text" autocomplete="on" date-type="number" step=any
+                                                                                                               onchange="clculation(this)"
+                                                                                                               value="0"
+                                                                                                               class=" form-control"
+                                                                                                               id="FldCashInAmount"
+                                                                                                               name="FldCashInAmount"
+                                                                                                               placeholder="مبلغ">
+                                                                                                        <div class="form-control-position">
+                                                                                                            <i class="feather icon-doler"></i>
+                                                                                                        </div>
+
+                                                                                                    </fieldset>
+                                                                                                </div>
+
+                                                                                                <div class="col-xs-4 col-md-4 col-sm-12">
+                                                                                                    <fieldset class="form-label-group form-group position-relative has-icon-left">
+                                                                                                        <label for="FldCompanyWageCoeff">ضریب کارمزد شرکت <span style="color:#f00;">(اجباری)</span></label>
+                                                                                                        <input type="text" autocomplete="on"
+                                                                                                               onchange="clculation(this)"
+                                                                                                               value="0"
+                                                                                                               class=" form-control"
+                                                                                                               id="FldCompanyWageCoeff"
+                                                                                                               name="FldCompanyWageCoeff"
+                                                                                                               placeholder="کارمزد شرکت">
+                                                                                                        <div class="form-control-position">
+                                                                                                            <i class="feather icon-number"></i>
+                                                                                                        </div>
+
+                                                                                                    </fieldset>
+                                                                                                </div>
+                                                                                                <div class="col-xs-4 col-md-4 col-sm-12">
+                                                                                                    <fieldset class="form-label-group form-group position-relative has-icon-left">
+                                                                                                        <label for="FldBrokerWageCoeff">ضریب کارمزد کارگزار <span style="color:#f00;">(اجباری)</span></label>
+                                                                                                        <input type="text" autocomplete="on"
+                                                                                                               onchange="clculation(this)"
+                                                                                                               value="0"
+                                                                                                               class="form-control"
+                                                                                                               id="FldBrokerWageCoeff"
+                                                                                                               name="FldBrokerWageCoeff"
+                                                                                                               placeholder="کارمزد کارگزار">
+                                                                                                        <div class="form-control-position">
+                                                                                                            <i class="feather icon-number"></i>
+                                                                                                        </div>
+
+                                                                                                    </fieldset>
+                                                                                                </div>
+
+                                                                                                <div class="col-xs-4 col-md-4 col-sm-12">
+                                                                                                    <fieldset class="form-label-group form-group position-relative has-icon-left">
+                                                                                                        <label for="FldCompanyWage">کارمزد شرکت <span style="color:#f00;">(اجباری)</span></label>
+                                                                                                        <input type="number" step=any
+                                                                                                               value="0"
+                                                                                                               class=" form-control"
+                                                                                                               id="FldCompanyWage"
+                                                                                                               name="FldCompanyWage" readonly
+                                                                                                               placeholder="کارمزد شرکت">
+                                                                                                        <div class="form-control-position">
+                                                                                                            <i class="feather icon-number"></i>
+                                                                                                        </div>
+
+                                                                                                    </fieldset>
+                                                                                                </div>
+                                                                                                <div class="col-xs-4 col-md-4 col-sm-12">
+                                                                                                    <fieldset class="form-label-group form-group position-relative has-icon-left">
+                                                                                                        <label for="FldBrokerWage">کارمزد کارگزار <span style="color:#f00;">(اجباری)</span></label>
+                                                                                                        <input type="number" step=any readonly value="0" class="form-control" id="FldBrokerWage" name="FldBrokerWage" placeholder="کارمزد کارگزار">
+                                                                                                        <div class="form-control-position">
+                                                                                                            <i class="feather icon-number"></i>
+                                                                                                        </div>
+
+                                                                                                    </fieldset>
+                                                                                                </div>
+
+
+                                                                                                <div class="col-xs-4 col-md-4 col-sm-12">
+                                                                                                    <fieldset class="form-label-group form-group position-relative has-icon-left">
+                                                                                                        <label for="FldNetCashIn">مبلغ خالص ورودی <span style="color:#f00;">(اجباری)</span> </label>
+                                                                                                        <input type="number" step=any readonly value="0" class=" form-control" id="FldNetCashIn" name="FldNetCashIn" placeholder="مبلغ خالص ورودی ">
+                                                                                                        <div class="form-control-position">
+                                                                                                            <i class="feather icon-number"></i>
+                                                                                                        </div>
+
+                                                                                                    </fieldset>
+                                                                                                </div>
+
+
+                                                                                                <div class="col-xs-4 col-md-4 col-sm-12">
+                                                                                                    <fieldset class="form-label-group form-group position-relative has-icon-left">
+                                                                                                        <label for="FkDestinationCurrency">ارز مقصد <span style="color:#f00;">(اجباری)</span></label>
+                                                                                                        <select id="FkDestinationCurrency" name="FkDestinationCurrency" asp-items="@Model.TblDestinationCurrency" class="btn btn-outline-primary dropdown-toggle waves-effect waves-light select2 form-control"></select>
+                                                                                                        <div class="form-control-position">
+                                                                                                            <i class="feather icon-number"></i>
+                                                                                                        </div>
+
+                                                                                                    </fieldset>
+                                                                                                </div>
+                                                                                                <div class="col-xs-4 col-md-4 col-sm-12">
+                                                                                                    <fieldset class="form-label-group form-group position-relative has-icon-left">
+                                                                                                        <label for="FldXerate">نرخ تبدیل <span style="color:#f00;">(اجباری)</span></label>
+                                                                                                        <input type="text" autocomplete="on" class="form-control" onchange="clculationNetDestCurrency(this)" id="FldXerate" name="FldXerate" placeholder="FldXerate">
+                                                                                                        <div class="form-control-position">
+                                                                                                            <i class="feather icon-number"></i>
+                                                                                                        </div>
+
+                                                                                                    </fieldset>
+                                                                                                </div>
+
+
+                                                                                                <div class="col-xs-4 col-md-4 col-sm-12">
+                                                                                                    <fieldset class="form-label-group form-group position-relative has-icon-left">
+                                                                                                        <label for="FldCashInNetDestCurrency">مبلغ خالص در ارز مقصد <span style="color:#f00;">(اجباری)</span> </label>
+                                                                                                        <input type="number" step=any value="0" class=" form-control" id="FldCashInNetDestCurrency" name="FldCashInNetDestCurrency" placeholder="FldCashInNetDestCurrency ">
+                                                                                                        <div class="form-control-position">
+                                                                                                            <i class="feather icon-number"></i>
+                                                                                                        </div>
+
+                                                                                                    </fieldset>
+                                                                                                </div>
+
+
+                                                                                                <div class="col-xs-4 col-md-4 col-sm-12">
+                                                                                                    <fieldset class="form-label-group form-group position-relative has-icon-left">
+                                                                                                        <label for="FldRefrence">رفرنس <span style="color:#f00;">(اجباری)</span></label>
+                                                                                                        <input type="text" autocomplete="on" class="form-control" id="FldRefrence" name="FldRefrence" placeholder="رفرنس">
+                                                                                                        <div class="form-control-position">
+                                                                                                            <i class="feather icon-number"></i>
+                                                                                                        </div>
+
+                                                                                                    </fieldset>
+                                                                                                </div>
+
+                                                                                                <div class="col-xs-4 col-md-4 col-sm-12">
+                                                                                                    <fieldset class="form-label-group form-group position-relative has-icon-left">
+                                                                                                        <label for="FldCashInDate">تاریخ <span style="color:#f00;">(اجباری)</span> </label>
+                                                                                                        <input type="date" step="1.0" class="form-control" id="FldCashInDate" name="FldCashInDate" placeholder="تاریخ ">
+                                                                                                        <div class="form-control-position">
+                                                                                                            <i class="feather icon-doler"></i>
+                                                                                                        </div>
+
+                                                                                                    </fieldset>
+                                                                                                </div>
+                                                                                                <div class="col-xs-4 col-md-4 col-sm-12">
+                                                                                                    <fieldset class="checkbox">
+                                                                                                        <div class="vs-checkbox-con vs-checkbox-primary">
+                                                                                                            <input type="hidden" id="FldReverseExchange" name="FldReverseExchange" value="false" />
+                                                                                                            <input type="checkbox" id="ReverseExchange" onchange="checkBoxClick(this)">
+                                                                                                            <span class="vs-checkbox">
+                                                                                                                <span class="vs-checkbox--check">
+                                                                                                                    <i class="vs-icon feather icon-check"></i>
+                                                                                                                </span>
+                                                                                                            </span>
+                                                                                                            <span class="">نرخ تبدیل معکوس</span>
+                                                                                                        </div>
+                                                                                                    </fieldset>
+                                                                                                </div>
+                                                                                                 <div class="col-xs-4 col-md-4 col-sm-12">
+                                                                                                    <fieldset class="checkbox">
+                                                                                                        <div class="vs-checkbox-con vs-checkbox-primary">
+                                                                                                             <label for="PassedDate"><span class="">تاریخ پاس شدن</span></label>
+                                                                                                            <input type="date" step="1.0" class="form-control"onfocusout="setValueDate()" id="PassedDate" name = "PassedDate">
+
+                                                                                                        </div>
+                                                                                                    </fieldset>
+                                                                                                </div>
+                                                                                               @* <div class="col-xs-4 col-md-4 col-sm-12">
+                                                                                                    <fieldset class="form-label-group form-group position-relative has-icon-left">
+
+                                                                                                        <input type="hidden" name="FldReverseExchange" id="FldReverseExchange" value="false" />
+                                                                                                        <input type="checkbox" value="True" onchange="checkBoxClick(this)" class="form-control" id="ReverseExchange" name="ReverseExchange">
+                                                                                                        <div class="form-control-position">
+                                                                                                            <i class="feather icon-doler"></i>
+                                                                                                        </div>
+                                                                                                        <label for="ReverseExchange">نرخ تبدیل معکوس؟</label>
+                                                                                                    </fieldset>
+                                                                                                </div>*@
+                                                                                            </div>
+                                                                                            <div class="" row">
+                                                                                                <div class="col-12">
+                                                                                                    <br />
+                                                                                                    <button type="submit" class="btn btn-primary float-right btn-inline waves-effect waves-light">ثبت</button>
+                                                                                                </div>
+                                                                                            </div>
+
+                                                                                        </div>
+                                                                                    </form>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                        </div>
+
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="myGrid" data-model="@Model.TempListCashins.ToJson()" class="aggrid ag-theme-material" style="height:500px !important;"></div>
+    </div>
+</div>
+
+
+<script>
+
+               function setValueCombo(){
+            var selectedValue =$('#FkForeignCurrencyId').val();
+            document.getElementById("FkDestinationCurrency").value = selectedValue;
+        }
+
+        var onSuccess = function(context){
+           if (context.success == false){
+             var prim = confirm(context.errors + "\n\r" + "آیا از ثبت اطلاعات مطمئن هستید؟");
+             if(prim == true){
+                 $('#permisions').val('true');
+                 //$('#forms').submit();
+             }
+                $('form input[type="submit"]').removeAttr('disabled');
+                $('form button[type="submit"]').removeAttr('disabled');
+           }
+           else{
+               location.reload();
+           }
+        };
+
+        var fldreverseexchange = false;
+
+        function clculation(element) {
+                var values = $('#FldCashInAmount').val();
+                var sn = String(values).replaceAll(',','');
+                var amount = Number(sn);
+                console.log(amount);
+                var fcw = amount * $('#FldCompanyWageCoeff').val();
+                var fbw = amount * $('#FldBrokerWageCoeff').val();
+                var fnc = amount - fcw - fbw;
+                $('#FldCompanyWage').val(fcw);
+                $('#FldBrokerWage').val(fbw);
+                $('#FldNetCashIn').val(fnc);
+                clculationNetDestCurrency();
+    }
+    function clculationNetDestCurrency(element){
+        console.log(123);
+        if(fldreverseexchange == false){
+            var fldCashInNet_Dest_currency=$('#FldNetCashIn').val() * $('#FldXerate').val();
+        console.log(fldCashInNet_Dest_currency);
+
+        $('#FldCashInNetDestCurrency').val(fldCashInNet_Dest_currency);
+        }
+        else{
+            var fldCashInNet_Dest_currency=$('#FldNetCashIn').val()/ $('#FldXerate').val();
+        console.log(fldCashInNet_Dest_currency);
+
+        $('#FldCashInNetDestCurrency').val(fldCashInNet_Dest_currency);
+        }
+
+    }
+
+    function checkBoxClick(c){
+        $('#FldReverseExchange').val(c.checked);
+        fldreverseexchange = c.checked;
+        clculation();
+    }
+
+</script>
